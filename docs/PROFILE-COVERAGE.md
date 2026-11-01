@@ -20,3 +20,11 @@
 | Locally installed plugins, extensions and companion programs | No bundles | No executables | Inventory and install using their official paths |
 
 These are **coverage categories**, not an inventory of an individual user's live machine. A trustworthy restore must compare actual items on source and target, including `CODEX_HOME` overrides. Full restoration of all Desktop sessions and external integrations is not claimed.
+
+## Recovery scope: configuration versus complete installation
+
+A Homeport **snapshot is not a full computer or Codex Desktop backup**. Both current engines deliberately limit a snapshot to **5,000 files**, **25 MiB per file** and **250 MiB total** (the manifest limit is **4 MiB**). An oversized or unsupported source fails; do not assume extra files were saved, bypass size guards, or feed an unrelated backup format into the Homeport restore command. Homeport accepts only its own verified manifest schema and allowlisted paths.
+
+The allowlist includes selected global configuration, instructions, regular skill files, rules, prompts and memories. It does **not** include arbitrary helper folders (for example, scripts stored in `~/.codex/network/`), system/desktop runtimes, plugin caches, dependencies, Windows/OS configuration, Git worktrees, authentication, conversations or SQLite state. A restored `AGENTS.md` can therefore refer to a network tool or third-party skill executable that is **not present** on the destination. Resolve such references separately, with source/provenance checks and the user's permission; never copy old credentials or bypass the destination's sandbox.
+
+A Homeport snapshot captures the selected files **at the time of backup**; it does not auto-refresh after later configuration changes. Separately protect any larger private disaster-recovery set with an encrypted, off-device backup and a verified inventory, keeping it out of the public repository. On the destination, install the official product, sign in again, review paths and model settings, verify skill discovery and MCP/network dependencies, and run a focused functional smoke test. A valid hash is not a guarantee of successful application recovery.

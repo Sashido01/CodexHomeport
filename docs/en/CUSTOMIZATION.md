@@ -24,3 +24,11 @@ Modes such as NORMAL, SAVE, STRICT, and RESERVE can be personal preferences. Hom
 ## Transfer boundaries
 
 Homeport can preserve only the settings and instruction files listed in the [coverage matrix](../PROFILE-COVERAGE.md). Model recommendations, local servers, network routes, system policies, and Desktop state need a separate manual decision. Backups and their logs stay outside Git.
+
+## Full recovery sets and Homeport limits
+
+Homeport is **not a complete computer or Codex Desktop backup**. Its current engine supports at most **5,000 files**, **25 MiB per file** and **250 MiB total**, with a **4 MiB manifest** limit. Exceeding these limits should fail rather than silently omit files. Do not disable safety guards or attempt to restore a different tool's manifest format using Homeport.
+
+It preserves selected global settings, instructions, regular skill files, rules, prompts and memories. It **does not preserve** arbitrary helper directories (for example `~/.codex/network/`), installed Codex Desktop, runtime packages, skill/MCP dependencies, system networking, Git projects, authentication, conversations or SQLite. A restored `AGENTS.md` may therefore reference a helper missing on the new host: review and install that dependency separately, without migrating old credentials or weakening sandbox protections.
+
+A snapshot reflects the files **when it was created** and does not refresh automatically. Keep any larger private disaster-recovery set separately, preferably encrypted and off-device; public GitHub is not its backup. On the destination, use the official Codex installer, sign in again, review paths and config, confirm skill discovery and MCP/network prerequisites, and run a safe functional smoke test. Matching SHA-256 does not establish that the full environment works.
