@@ -72,6 +72,6 @@ The following paragraph records the historical `v0.0.1` state and is superseded 
 
 ## Prepared public bootstrap — 0.0.6
 
-The new isolated Python tests target dry-run, installation into an empty fake profile, repeat safety, preservation of existing global files, `CODEX_HOME` overrides and symlink refusal. Windows PowerShell acceptance exercises an isolated synthetic profile and idempotency. Hosted CI must pass on the exact implementation and merge commits before marking the new checks PASS.
+The new isolated Python tests target dry-run, installation into an empty fake profile, repeat safety, preservation of existing global files, `CODEX_HOME` overrides and symlink refusal. Windows PowerShell acceptance exercises an isolated synthetic profile and idempotency. Hosted push CI run [41341336238](https://github.com/Sashido01/CodexHomeport/actions/runs/41341336238) **PASS 4/4** on implementation SHA `7d47a56547541efdb0af960dda9afa96fdffcdfe`: Python Ubuntu/Windows, native PowerShell (including isolated bootstrap) and bilingual documentation. The first run failed on a PowerShell test-only variable named `$home`, which conflicts with read-only `$HOME`; renamed it to `$fakeHome` before this passing run. Tests use only synthetic profiles; they do not prove native GUI install or login.
 
 **NOT_VERIFIED:** first-time Windows/Linux Desktop GUI installation and sign-in, real Linux preview GUI, third-party skill activation and MCP, and restoration of the private MyCodex bundle. These cannot be inferred from synthetic profile tests.
