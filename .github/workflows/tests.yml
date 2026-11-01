@@ -1,0 +1,42 @@
+name: Tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  python-profile:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit and integration tests
+        run: python -m unittest discover -s tests -v
+  powershell-native:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PowerShell parsing and native status/backup/verify/restore (isolated profile)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tokens = $null; $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'scripts/homeport.ps1'), [ref]$tokens, [ref]$errors) | Out-Null
+          if ($errors.Count -ne 0) { throw ($errors | Out-String) }
+          $root = Join-Path $env:RUNNER_TEMP 'fake-home'
+          $codex = Join-Path $root '.codex'
+          New-Item -ItemType Directory -Path $codex -Force | Out-Null
+          'model = "test-model"' | Set-Content -LiteralPath (Join-Path $codex 'config.toml')
+          & ./scripts/homeport.ps1 -Action Status -UserHome $root
+          $backup = Join-Path $env:RUNNER_TEMP 'fake-snapshot'
+          & ./scripts/homeport.ps1 -Action Backup -UserHome $root -BackupDir $backup
+          & ./scripts/homeport.ps1 -Action Verify -BackupDir $backup
+          'changed = true' | Set-Content -LiteralPath (Join-Path $codex 'config.toml')
+          & ./scripts/homeport.ps1 -Action Restore -UserHome $root -BackupDir $backup
+          if ((Get-Content -LiteralPath (Join-Path $codex 'config.toml') -Raw) -notmatch 'changed = true') { throw 'Dry-run wrote files' }
+          & ./scripts/homeport.ps1 -Action Restore -UserHome $root -BackupDir $backup -Apply
+          if ((Get-Content -LiteralPath (Join-Path $codex 'config.toml') -Raw) -notmatch 'test-model') { throw 'Restore incorrect' }

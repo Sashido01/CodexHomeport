@@ -1,0 +1,25 @@
+# NEVER commit private Codex profiles or backups
+/backups/
+/private/
+/.local/
+/.snapshots/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+**/auth.json
+**/history.jsonl
+**/credentials.json
+**/token.json
+**/.env
+**/.env.*
+**/sessions/
+**/logs/
+*.jsonl
+*.zip
+*.7z
+*.tar.gz
+*.bak
+*.backup
+__pycache__/
+*.pyc
+.DS_Store
