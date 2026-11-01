@@ -36,7 +36,7 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $tokens = $null; $errors = $null
-          foreach ($file in @('scripts/homeport.ps1','scripts/homeport-menu.ps1')) {
+          foreach ($file in @('scripts/homeport.ps1','scripts/homeport-menu.ps1','scripts/bootstrap.ps1')) {
             [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $file), [ref]$tokens, [ref]$errors) | Out-Null
             if ($errors.Count -ne 0) { throw ($errors | Out-String) }
           }
@@ -57,6 +57,9 @@ jobs:
       - name: Extended fail-closed PowerShell acceptance
         shell: pwsh
         run: pwsh -NoProfile -File tests/test_homeport.ps1
+      - name: Isolated Windows bootstrap
+        shell: pwsh
+        run: pwsh -NoProfile -File tests/test_bootstrap.ps1
   docs-and-release:
     runs-on: ubuntu-latest
     timeout-minutes: 10

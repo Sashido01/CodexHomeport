@@ -1,6 +1,6 @@
 # Codex Homeport
 
-**Official Codex CLI, conservative private configuration recovery.**
+**Quick, opt-in Codex Desktop starter setup and conservative private configuration recovery.**
 
 Codex Homeport is an **independent**, MIT-licensed companion. It invokes official OpenAI installation methods; it does not fork Codex, change authentication, distribute credentials, or restore Codex Desktop sessions.
 
@@ -11,6 +11,14 @@ Codex Homeport is an **independent**, MIT-licensed companion. It invokes officia
 Separate English and Russian guides cover installation, backup, restoration, security, contributions, GitHub Actions and maintenance. Technical decisions and historical test evidence are in [docs](docs).
 
 Optional templates and guidance for model selection, `AGENTS.md`, skills and MCP are in the [customization guide](docs/en/CUSTOMIZATION.md) ([русская версия](docs/ru/CUSTOMIZATION.md)). No template is applied automatically.
+
+## Quick prepared profile
+
+Windows: `pwsh -NoProfile -File .\scripts\bootstrap.ps1 -Apply -InstallCli -InstallDesktop`
+
+Linux: `sh setup.sh --apply --install-cli`; install the official Linux Desktop preview package with the distribution's package manager.
+
+The bootstrap creates only missing global instructions, a starter config and three original skills; it never imports secrets or overwrites personal files. [Русская инструкция](docs/ru/BOOTSTRAP.md) · [English quick setup](docs/en/BOOTSTRAP.md).
 
 ## Capabilities
 
