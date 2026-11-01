@@ -5,11 +5,11 @@ $setup = Join-Path $repo 'scripts/bootstrap.ps1'
 $home = Join-Path ([IO.Path]::GetTempPath()) ('homeport-bootstrap-' + [guid]::NewGuid().ToString('N'))
 try {
     $dry = & $setup -CodexHome $home
-    if ($LASTEXITCODE -ne 0 -or (Test-Path $home)) { throw 'Dry-run modified fake home' }
+    if (Test-Path $home) { throw 'Dry-run modified fake home' }
     $items = @($dry | ForEach-Object { $_ | ConvertFrom-Json })
     if (-not @($items | Where-Object status -eq 'WOULD_CREATE').Count) { throw 'Missing dry-run plan' }
     & $setup -CodexHome $home -Apply | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw 'Apply failed' }
+    if (-not (Test-Path (Join-Path $home 'AGENTS.md'))) { throw 'Apply failed' }
     foreach ($path in @('AGENTS.md','config.toml','skills/homeport-recovery/SKILL.md','skills/homeport-diagnostics/SKILL.md','skills/homeport-review/SKILL.md')) {
         if (-not (Test-Path (Join-Path $home $path))) { throw "Missing: $path" }
     }

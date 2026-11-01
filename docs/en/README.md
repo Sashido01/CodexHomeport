@@ -1,5 +1,7 @@
 # Codex Homeport — English documentation
 
+**[Quick prepared Codex setup](BOOTSTRAP.md)** — public global instructions and skills without overwriting personal files.
+
 [Русский](../ru/README.md) · [Getting started](GETTING_STARTED.md) · [Customization](CUSTOMIZATION.md) · [Security](SECURITY.md) · [Maintenance](MAINTENANCE.md) · [CI policy](CI_POLICY.md) · [Contributing](CONTRIBUTING.md)
 
 Codex Homeport is an independent open-source companion for using the official Codex CLI and safely recovering selected user configuration. It is **not** an OpenAI product, does not fork Codex, does not change sign-in or install an alternative runtime.

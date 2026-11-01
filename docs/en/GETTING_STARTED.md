@@ -1,5 +1,7 @@
 # Getting started
 
+For quick Desktop and starter profile setup, read the [bootstrap guide](BOOTSTRAP.md).
+
 [Русский](../ru/GETTING_STARTED.md) | [Overview](README.md)
 
 Optional templates and settings guidance: [Codex customization](CUSTOMIZATION.md).
