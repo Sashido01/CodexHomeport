@@ -9,7 +9,7 @@ Command: `python scripts/check-public-tree.py` with staged source tracked in Git
 ## NOT_VERIFIED (not an implementation claim)
 
 - Genuine Windows PowerShell 7 runtime, ACL behavior, Windows installer execution, and real GUI double-click.
-- GitHub Actions remote runner outcomes, remote branch protections, public repository creation and public tag existence.
+- GitHub Actions remote runner outcomes, remote branch protections, publication of this source/tag to the already existing public repository and public tag existence.
 - Native official Codex installer execution/upgrade, ChatGPT sign-in, Codex Desktop session restore, MCP reconnect, physical device behavior.
 - Real existing user profile migration on Windows/Ubuntu and cross-OS path rewriting.
 

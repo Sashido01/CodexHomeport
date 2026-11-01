@@ -7,7 +7,7 @@ All entries describe implemented, tested changes; no claim of remote release is 
 - Added portable public repository foundation, sanitised AGENTS/config/skill templates and explicit ADR decisions.
 - Added profile coverage matrix, DevSecMLOps controls, release/publishing procedure, and scoped Codex acceptance task.
 - Hardened both backup engines with manifest entry/size limits and staging before restore; Python also rejects case-insensitive filename collisions and symlinked backup paths.
-- Strengthened source-only GitHub CI (synthetic Windows PowerShell smoke planned for GitHub Actions) and added a heuristic public-tree check.
+- Added Windows line-ending policy and strengthened source-only GitHub CI (synthetic Windows PowerShell smoke planned for GitHub Actions) and added a heuristic public-tree check.
 - Synthetic Python Linux regression suite extended from 11 to 17 tests. Windows runtime and GitHub CI remain NOT_VERIFIED until actually executed.
 
 ## [0.0.0] - 2026-11-01
