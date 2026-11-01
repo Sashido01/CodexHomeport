@@ -21,7 +21,7 @@ CHANGELOG.md    release history
 AGENTS.md       repository-scoped Codex instructions
 ```
 
-**Version:** `0.0.1` (previous untagged `0.1.0` was an unreleased prototype). Tags advance `v0.0.0` → `v0.0.1`; see [versioning](docs/VERSIONING.md). The project is universal: no built-in developer-specific drive letter or home path. A local clone can live anywhere; only personal private snapshots belong outside that clone.
+**Version:** `0.0.2` (previous untagged `0.1.0` was an unreleased prototype). Tags advance from `v0.0.0`; see [versioning](docs/VERSIONING.md). The project is universal: no built-in developer-specific drive letter or home path. A local clone can live anywhere; only personal private snapshots belong outside that clone.
 
 **Included practical material:** [profile coverage matrix](docs/PROFILE-COVERAGE.md), [DevSecMLOps workflow](docs/DEVSECMLOPS.md), [reviewed public templates](templates), [maintainer GitHub procedure](docs/MAINTAINER.md), and [Codex acceptance task](docs/TASK_FOR_CODEX.md). Real installed configurations are deliberately not shipped. Users may copy/modify templates explicitly; Homeport never silently installs templates into a working profile.
 
@@ -99,13 +99,13 @@ python3 scripts/homeport.py restore --dir "$HOME/CodexHomeportBackups/first-snap
 
 **Границы гарантии:** не автоматическое восстановление всей истории Codex Desktop или его базы; не миграция авторизации; не проверка правильности всех MCP-серверов и сторонних навыков; не автоматическое преобразование путей Windows↔Linux. Это консервативное восстановление *конфигурационного профиля*, а не клонирование работающей сессии.
 
-## Статус реализации 0.0.1
+## Статус реализации 0.0.2
 
-- **Работает и проверено на изолированной Linux-среде:** экспорт, проверка хешей, dry-run, восстановление, сохранение предыдущих файлов, защита от ряда подмен/утечек (17 synthetic Python unit/integration tests on Linux at the time of this release).
-- **Windows PowerShell 7:** независимая нативная реализация подготовлена, но физический прогон на Windows **не выполнялся** в среде сборки. Не объявляем её принятой.
-- **Официальная установка OpenAI**: источник и механизмы проверены по документации, но реальное скачивание, запуск установщика и обновление рабочего Codex намеренно не выполнялись на тестовой машине.
+- **Linux и Windows PowerShell 7:** изолированные profile flows прошли синтетические проверки; подробности и границы доказательств — в [VALIDATION.md](docs/VALIDATION.md).
+- **Штатный Codex CLI:** существующая установка найдена и отвечает на `--version`. Установка, обновление и вход не выполнялись; Homeport использует официальный установщик только по явному действию пользователя.
+- **Профиль:** реальная конфигурация обследуется отдельно и только для частного локального инвентаря. Восстановление поверх неё не выполнялось.
 - **Codex Desktop:** не обновляется и не восстанавливается автоматически; следует штатному каналу поставки системы.
-- **GitHub:** публичный репозиторий существует, но локальный push из среды сборки не удался из-за недоступного DNS `github.com`; исходники и теги удалённо пока **NOT_PUBLISHED**, удалённый CI **NOT_VERIFIED**. Для публикации используйте обычный `git push` на машине с доступным GitHub.
+- **Публикация и CI:** результат конкретной GitHub-публикации и Actions запуска указан в [VALIDATION.md](docs/VALIDATION.md) после проверки удалённых refs и run status.
 
 Проверки и границы описаны в [VALIDATION.md](docs/VALIDATION.md), [RESEARCH.md](docs/RESEARCH.md), [SECURITY.md](docs/SECURITY.md) и [ARCHITECTURE.md](docs/ARCHITECTURE.md).
 

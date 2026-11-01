@@ -2,6 +2,13 @@
 
 All entries describe implemented, tested changes; no claim of remote release is implied.
 
+## [0.0.2] - 2026-11-01
+
+- Corrected the launcher menu's displayed version and aligned the Python and PowerShell engines with the release version.
+- Completed native Windows PowerShell 7 synthetic acceptance: parser, status/version, backup, manifest and SHA-256 verification, auth exclusion, restore dry-run, apply over existing files, and tampered-manifest rejection.
+- Confirmed the existing local Codex CLI is reachable on PATH and reports its installed version; no installer, login, update, or real-profile write was run.
+- Preserved the existing GitHub initial commit alongside the local bundle history; publication and remote CI results are recorded after their actual completion.
+
 ## [0.0.1] - 2026-11-01
 
 - Added portable public repository foundation, sanitised AGENTS/config/skill templates and explicit ADR decisions.

@@ -15,4 +15,14 @@ Command: `python scripts/check-public-tree.py` with staged source tracked in Git
 
 ## Scope and stop condition
 
-This package is a source-complete `v0.0.1` candidate, **not** a proven ready-to-restore-the-entire-desktop product. A successful native Windows isolated run and actual GitHub publication/CI evidence are required before calling the overall requested delivery COMPLETE. Those external steps are the only remaining acceptance gaps; do not create endless optional tasks.
+The following paragraph records the historical `v0.0.1` state and is superseded by the `v0.0.2` acceptance section below. This package is a profile recovery tool, **not** a proven way to restore the entire Codex Desktop installation.
+
+## Windows acceptance — v0.0.2 (2026-11-01)
+
+**PASS:** PowerShell 7.5.4 on the user's Windows host parsed both PowerShell entrypoints. An isolated temporary fake profile exercised Homeport version/status, backup, manifest verification, SHA-256 equality, exclusion of `auth.json`, dry-run without changing existing files, apply over existing files, restored prior contents, and fail-closed verification after manifest digest tampering. The temporary profile and snapshots were removed after the run. This is synthetic Windows evidence, not a real-profile restore or physical-device claim.
+
+**PASS:** The existing native Codex CLI was found through read-only status checks. No install, update, login, or auth command was run. Host-specific CLI details are kept in the private local acceptance journal.
+
+**PASS:** Python 3.14 Windows suite: 17/17 tests. Public tracked-tree heuristic: 37 files scanned, PASS. Python compile: PASS. `git diff --check`: PASS before release commit.
+
+**NOT_VERIFIED:** GitHub Actions result for the newly published commit/tag until the actual run completes. Desktop UI startup/session continuity, MCP reconnect functionality, and physical-device acceptance are outside this synthetic profile test. No live profile snapshot or restore was performed.
