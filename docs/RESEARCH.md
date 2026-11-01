@@ -6,8 +6,9 @@
 2. Official Codex installer shell source — https://github.com/openai/codex/blob/main/scripts/install/install.sh : supports `CODEX_HOME`, standalone package layout, upstream distribution URL. The script is not mirrored here.
 3. Official PowerShell installer source — https://github.com/openai/codex/blob/main/scripts/install/install.ps1 : native Windows script; no custom binary packaging here.
 4. Official advanced config / state locations — https://developers.openai.com/codex/config-advanced : `CODEX_HOME` default `~/.codex`; config, auth, history and other app state; project-level `.codex/config.toml` is separate from global config and depends on repository trust.
-5. Official environment variables — https://developers.openai.com/codex/environment-variables : installer variables `CODEX_NON_INTERACTIVE`, `CODEX_INSTALL_DIR`, core variables `CODEX_HOME` / `CODEX_SQLITE_HOME`.
-6. Latest official releases page — https://github.com/openai/codex/releases : on 2026-11-01 the latest stable displayed was CLI `0.166.0` (published 2026-10-29). **Do not pin this value**: always follow current official installer.
+5. Official Codex customization — [configuration](https://developers.openai.com/codex/config-reference), [custom instructions](https://developers.openai.com/codex/guides/agents-md), [skills](https://developers.openai.com/codex/skills), and [MCP](https://developers.openai.com/codex/mcp): use supported configuration and discovery mechanisms; MCP definitions do not provision external dependencies or grant authorization.
+6. Official environment variables — https://developers.openai.com/codex/environment-variables : installer variables `CODEX_NON_INTERACTIVE`, `CODEX_INSTALL_DIR`, core variables `CODEX_HOME` / `CODEX_SQLITE_HOME`.
+7. Latest official releases page — https://github.com/openai/codex/releases : on 2026-11-01 the latest stable displayed was CLI `0.166.0` (published 2026-10-29). **Do not pin this value**: always follow current official installer.
 
 ## Decisions / reasons
 
@@ -18,6 +19,7 @@
 - **No automatic secret migration:** sign-in again using the official login mechanism on the destination computer.
 - **No automated copy of project worktrees:** their own version history should live in their individual Git repos and backup systems.
 - **No external dependency manager for the backup engine:** Python standard library on Ubuntu/macOS; PowerShell 7 on Windows.
+- **No automatic profile importer:** the existing backup/verify/dry-run/apply/rollback flow handles selected files; presets are docs and templates for deliberate manual adoption. A new merge engine would add conflict and partial-write risk without a demonstrated use case.
 
 ## Context-specific requirements addressed in design
 
@@ -33,6 +35,15 @@ See `docs/VALIDATION.md` for local isolation tests. Cross-platform Windows end-t
 - Official custom instructions: https://developers.openai.com/codex/guides/agents-md ; official skills: https://developers.openai.com/codex/skills ; config: https://developers.openai.com/codex/config-reference ; MCP: https://developers.openai.com/codex/mcp . These describe separate user/project layers; installed state and external MCP executables require on-host verification.
 - GitHub Actions hardening: https://docs.github.com/en/actions/reference/security/secure-use ; Dependabot Actions updates: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/keeping-your-actions-up-to-date-with-dependabot . CI uses permissions read-only, pinned checkout, ephemeral fake profiles, no private snapshot artifacts.
 - Evidence vs assumptions: present docs do not prove a real Windows CLI or Desktop state works, nor that actual user skills are portable. This is a scoped configuration recovery toolkit, not a complete user-data migration product.
+
+## Portable customization findings — 2026-11-01
+
+- The safe reusable model-routing rule is advisory: continue on a capable user-selected model, do not stop merely because its identity is unknown, and leave any switch to the user. A `config.toml` default does not identify the model used by an individual chat or establish account access.
+- NORMAL/SAVE/STRICT/RESERVE labels can describe user preferences, but owner-specific percentage cutoffs and cost assumptions are not portable evidence. Homeport documents no quota thresholds or measured savings.
+- Installed MCP definitions, skill collections, project instructions, hooks and external tools are machine- and repository-specific. Public docs can explain supported native setup and review; they must not imply that copied config installs a server, grants authorization, or proves a skill is active.
+- Keep general advice in bilingual docs and the opt-in AGENTS template. Keep live values, exact personal policies, local reports, route helpers, third-party skills and recovery artifacts outside public Git. `docs/PROFILE-COVERAGE.md` states what Homeport actually snapshots; it is not a complete live-profile inventory.
+
+Official references rechecked for this guidance on 2026-11-01: [Codex CLI](https://developers.openai.com/codex/cli), [configuration reference](https://developers.openai.com/codex/config-reference), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [skills](https://developers.openai.com/codex/skills), and [MCP](https://developers.openai.com/codex/mcp). Exact setting availability can change; consult the linked documentation before applying a template.
 
 ## Windows acceptance recheck (2026-11-01)
 

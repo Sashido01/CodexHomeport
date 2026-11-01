@@ -18,7 +18,7 @@ import sys
 import uuid
 
 SCHEMA = 1
-VERSION = "0.0.4"
+VERSION = "0.0.5"
 MAX_FILES = 5000
 MAX_FILE_BYTES = 25 * 1024 * 1024
 MAX_TOTAL_BYTES = 250 * 1024 * 1024

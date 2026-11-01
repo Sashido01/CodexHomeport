@@ -8,6 +8,7 @@
 - **Recovery:** load+verify everything, dry-run by default, create a local rollback for overwritten files, copy/replace incrementally, post-restore verification. No implicit deletions or authentication copying.
 - **Logging:** line-oriented JSON (stdout; optional private `--audit-log`/`-AuditLog` with per-file entries) containing UTC timestamp, action, PASS/FAIL/DRY_RUN, path to the user's private backup when relevant, file counts, and failure explanation; never log file contents or credentials. Caller controls where logs are redirected, and should treat logs as private.
 - **Public Git:** only generic source code, tests, docs and license. CI uses synthetic, isolated test profiles.
+- **Customization guidance:** generic model-selection, allowance, `AGENTS.md`, skill and MCP advice is documentation-only and opt-in. It does not install skills, register servers, or edit the user's configuration.
 
 ## Known portability limits
 
@@ -22,3 +23,7 @@ Cross-OS config files may contain absolute paths, external MCP executable names,
 - **Publish plane (native Git/GitHub)**: local commits + annotated tags, CI and GitHub `gh`/Git publication performed by the owner. Profiles never cross the publication plane.
 
 Conservative limits: up to 5000 files; each at most 25 MiB, sum at most 250 MiB, manifest at most 4 MiB. This is deliberate protection against pathological input, not a promise to preserve arbitrarily huge custom skills. Hash checks detect corruption, not malicious rewrites of data plus manifest.
+
+## Manual customization boundary
+
+Homeport intentionally has no profile-import/merge engine. Users can compare generic templates with existing settings and make their own changes using native Codex configuration and MCP commands. The backup engine can preserve selected global files; it does not provision project policy, external tools, authentication or server authorization. A configuration value is not evidence of the active chat model or account entitlement.

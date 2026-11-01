@@ -54,6 +54,9 @@ jobs:
           if ((Get-Content -LiteralPath (Join-Path $codex 'config.toml') -Raw) -notmatch 'changed = true') { throw 'Dry-run changed target' }
           & ./scripts/homeport.ps1 -Action Restore -UserHome $root -BackupDir $snapshot -Apply
           if ((Get-Content -LiteralPath (Join-Path $codex 'config.toml') -Raw) -notmatch 'test-model') { throw 'Restore is incorrect' }
+      - name: Extended fail-closed PowerShell acceptance
+        shell: pwsh
+        run: pwsh -NoProfile -File tests/test_homeport.ps1
   docs-and-release:
     runs-on: ubuntu-latest
     timeout-minutes: 10

@@ -14,7 +14,7 @@ param(
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-$Version = '0.0.4'
+$Version = '0.0.5'
 $MaxFiles = 5000
 $MaxFileBytes = 25MB
 $MaxTotalBytes = 250MB

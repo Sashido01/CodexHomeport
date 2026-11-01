@@ -10,6 +10,8 @@ Codex Homeport is an **independent**, MIT-licensed companion. It invokes officia
 
 Separate English and Russian guides cover installation, backup, restoration, security, contributions, GitHub Actions and maintenance. Technical decisions and historical test evidence are in [docs](docs).
 
+Optional templates and guidance for model selection, `AGENTS.md`, skills and MCP are in the [customization guide](docs/en/CUSTOMIZATION.md) ([русская версия](docs/ru/CUSTOMIZATION.md)). No template is applied automatically.
+
 ## Capabilities
 
 | Component | Behavior |

@@ -13,3 +13,5 @@
 **Supply chain:** GitHub Actions checkout is pinned to a verified full commit SHA and uses read-only credentials. Dependabot can propose changes; no auto-merge. Official installer is separately fetched when the user explicitly executes installation, never in CI. A trusted HTTPS host is not proof of a signed installer; review the actual script and verify provenance as required.
 
 **KPI:** accepted scope / model allowance consumed, reproducible test evidence, and recovery time only when measured. Do not invent savings or success rates.
+
+**Portable guidance:** model routing and reasoning remain advisory user policy. Continue on the selected capable model; do not gate a task on an unknown active-model label. Avoid percentage-based allowance presets unless a user explicitly selects them and has a reliable remaining-usage signal. MCP server definitions are not server installations or authorization and are never copied from a live profile into public examples.

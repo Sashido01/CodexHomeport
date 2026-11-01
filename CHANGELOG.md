@@ -2,6 +2,14 @@
 
 All entries describe implemented, tested changes; no claim of remote release is implied.
 
+## [0.0.5] - 2026-11-01 (development, not yet tagged)
+
+- Added matching Russian and English opt-in customization guides covering advisory model choice, allowance preferences, instructions, skills, MCP, and manual review.
+- Updated the shared AGENTS template to preserve user-selected model behavior and avoid unsupported quota or cost assumptions.
+- Documented transfer boundaries and the decision to keep preset adoption manual; Homeport does not install servers or merge profiles.
+- Added local Markdown-link validation and customization-document parity to the docs checker.
+- Added reusable PowerShell 7 Windows acceptance coverage for hashes, private-data exclusion, dry-run, apply, mid-restore rollback, invalid paths/digests and symlinks; hosted CI results are recorded after execution in `docs/VALIDATION.md`.
+
 ## [0.0.4] - 2026-11-01 (development, not yet tagged)
 
 - Merged the reviewed Dependabot checkout v7.0.1 update. Its earlier PR failure was the already-fixed Windows PowerShell exit-status defect, not checkout.
