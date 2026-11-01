@@ -40,3 +40,15 @@ The following paragraph records the historical `v0.0.1` state and is superseded 
 **PASS:** The public repository displays the current README and source tree. The `v0.0.3` release tag remains on its tested source SHA; a documentation-only validation update follows on `main`. Tags `v0.0.0` through `v0.0.3` preserve the original history. Security settings are enabled as recorded above. No force push was used.
 
 **NOT_VERIFIED:** Codex Desktop session continuity, MCP reconnect behavior, and physical-device acceptance are outside this profile-tool task. No live user profile snapshot or restore was performed.
+
+## GitHub Actions and bilingual documentation audit — 0.0.4 development (2026-11-01)
+
+**PASS:** Authorized GitHub connection resolves to account `Sashido01`. New commit `328e5299d2be89f74a613ff0c47ba16ce9bec929` identifies its Git author/committer as `Sashido01` with the GitHub-generated private email address. Older immutable commit history contains a different author and placeholder email; no published tag or history was rewritten.
+
+**PASS:** Dependabot PR #1 for `actions/checkout` v7.0.1 (pinned `3d3c42e5aac5ba805825da76410c181273ba90b1`) was squash-merged in commit `79d5cee`. Historical failure `41331901840` was due to the PowerShell exit-code defect already fixed in `v0.0.3`; the combined-main run `41332769330` passed.
+
+**PASS:** The bilingual documentation and source/version changes are committed on `main`. A first run `41333433827` failed in two Python matrix jobs solely because a version test expected literal `0.0.3`. The test now reads the `VERSION` file. The follow-up run [41333518665](https://github.com/Sashido01/CodexHomeport/actions/runs/41333518665) **passed all four jobs**: Python Ubuntu, Python Windows, native PowerShell Windows, and documentation/version consistency. All checks are synthetic; no live profile was restored.
+
+**PARTIAL — settings:** GitHub's public branch endpoint reports `main.protected=true` but `required_status_checks.enforcement_level=off` and an empty required-check list. Branch protection detail endpoint returned 403 for this integration. Therefore mandatory CI checks and exact protection rules cannot be confirmed as enforced; an administrator must inspect Settings → Rules/Actions. Source files cannot turn those settings on.
+
+**NOT_VERIFIED:** Local `D:\GitHub\CodexHomeport` Git state and identity, local JSONL logs, a new `v0.0.4` release tag, native Codex installer/GUI execution, live profile restore and MCP reconnection. The remote updates were made through the authorized GitHub connection, not through the user's local Git checkout. Do not call 0.0.4 a fully accepted release before those separate release criteria are met.

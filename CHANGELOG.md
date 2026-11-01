@@ -8,7 +8,7 @@ All entries describe implemented, tested changes; no claim of remote release is 
 - Separated English and Russian user guides, security, contribution, maintenance and CI policy documentation, with language navigation.
 - Added CI documentation parity and version checks plus execution timeouts. Retained least-privilege read-only permissions and checkout SHA pinning.
 - Documented native per-repository Git identity checks to prevent incorrect author attribution. Existing published tags and commits remain unchanged.
-- Remote combined-main checks and any release tag must be verified before claiming a 0.0.4 release.
+- Combined-main CI passed all four Linux/Windows, PowerShell and documentation jobs on commit 328e529 (run 41333518665). An existing hard-coded microversion in a unit test caused one failed run; the test now reads VERSION. Release tag v0.0.4 is not yet published.
 
 ## [0.0.3] - 2026-11-01
 
