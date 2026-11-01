@@ -32,3 +32,8 @@ Homeport is **not a complete computer or Codex Desktop backup**. Its current eng
 It preserves selected global settings, instructions, regular skill files, rules, prompts and memories. It **does not preserve** arbitrary helper directories (for example `~/.codex/network/`), installed Codex Desktop, runtime packages, skill/MCP dependencies, system networking, Git projects, authentication, conversations or SQLite. A restored `AGENTS.md` may therefore reference a helper missing on the new host: review and install that dependency separately, without migrating old credentials or weakening sandbox protections.
 
 A snapshot reflects the files **when it was created** and does not refresh automatically. Keep any larger private disaster-recovery set separately, preferably encrypted and off-device; public GitHub is not its backup. On the destination, use the official Codex installer, sign in again, review paths and config, confirm skill discovery and MCP/network prerequisites, and run a safe functional smoke test. Matching SHA-256 does not establish that the full environment works.
+
+
+## Prepared starter
+
+The public bootstrap adds only missing global files and three original skills, not a personal MyCodex profile. See [quick setup](BOOTSTRAP.md). Private restore requires separate compatibility review.

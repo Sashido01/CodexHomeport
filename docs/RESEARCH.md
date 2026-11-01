@@ -51,3 +51,13 @@ Official references rechecked for this guidance on 2026-11-01: [Codex CLI](https
 - The [configuration guide](https://developers.openai.com/codex/config-advanced) and [AGENTS.md guide](https://developers.openai.com/codex/guides/agents-md) distinguish user and project instructions/configuration. Generic repository templates therefore remain examples, not a representation of any live profile.
 - Windows PowerShell 7 synthetic acceptance and the local CLI version check are recorded in `docs/VALIDATION.md`. Real profile restoration, Desktop session continuity, and MCP reconnect remain outside the evidence collected.
 - The first published Actions run exposed a process exit-code leak after an expected `git rev-parse` miss for a private path outside Git. The PowerShell engine now clears that handled status; the `0.0.3` branch and tag Actions runs both passed.
+
+
+## Official Desktop and public starter research — 2026-11-01
+
+- [Windows app](https://learn.chatgpt.com/docs/app/windows): official Store installation `winget install --id 9PLM9XGG6VKS -s msstore`; do not redistribute an unofficial GUI.
+- [Linux Desktop preview](https://learn.chatgpt.com/docs/linux/linux-app): Ubuntu 24.04/26.04, Debian 13, Fedora 43/44 and Arch on x64/ARM64; native official package. Computer Use is not supported in Linux preview.
+- [Official CLI](https://github.com/openai/codex/blob/main/README.md): platform installers remain official and independent of Desktop installation.
+- [CODEX_HOME](https://learn.chatgpt.com/docs/config-file/environment-variables): supported global profile root.
+
+Decision: provide a minimal, safe, repeatable public scaffold; do not pretend that proprietary/third-party skills, OS runtimes, full Desktop history or authentication can be reconstructed from source. No automatic private import or changes to existing backup semantics.

@@ -2,7 +2,7 @@
 # Do not paste real secrets in this public repository.
 # Do not force a model ID: valid IDs and entitlements change over time.
 # model = "<your-chosen-available-model>"
-# model_reasoning_effort = "medium"
-# approval_policy = "on-request"
+model_reasoning_effort = "medium"
+approval_policy = "on-request"
 # sandbox_mode = "workspace-write"
 # MCP servers should be added with official `codex mcp` commands and reviewed individually.

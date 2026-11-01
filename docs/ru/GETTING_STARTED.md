@@ -1,5 +1,7 @@
 # Начало работы
 
+Быстрая установка Desktop и готового каркаса: [пошаговая инструкция](BOOTSTRAP.md).
+
 [English](../en/GETTING_STARTED.md) | [Описание](README.md)
 
 Необязательные шаблоны и выбор настроек: [Настройка Codex](CUSTOMIZATION.md).

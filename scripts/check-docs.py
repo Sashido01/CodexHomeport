@@ -6,7 +6,7 @@ import sys
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-PAIRED = ("README.md", "GETTING_STARTED.md", "SECURITY.md", "MAINTENANCE.md", "CI_POLICY.md", "CONTRIBUTING.md", "CUSTOMIZATION.md")
+PAIRED = ("README.md", "GETTING_STARTED.md", "SECURITY.md", "MAINTENANCE.md", "CI_POLICY.md", "CONTRIBUTING.md", "CUSTOMIZATION.md", "BOOTSTRAP.md")
 
 def main():
     errors = []

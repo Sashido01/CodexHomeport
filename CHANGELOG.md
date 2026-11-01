@@ -2,6 +2,12 @@
 
 All entries describe implemented, tested changes; no claim of remote release is implied.
 
+## [0.0.6] - 2026-11-01 (development, not yet tagged)
+
+- Added opt-in Windows PowerShell and Linux Python starter bootstrap: public global instructions, config and three original skills, with dry-run and no overwrites.
+- Added optional native CLI/Windows Desktop installation flags and bilingual quick setup guidance for the official Linux Desktop preview.
+- Added synthetic bootstrap tests; live Desktop install/login, third-party skills and private MyCodex restore remain outside tested coverage.
+
 ## [0.0.5] - 2026-11-01 (development, not yet tagged)
 
 - Added matching Russian and English opt-in customization guides covering advisory model choice, allowance preferences, instructions, skills, MCP, and manual review.

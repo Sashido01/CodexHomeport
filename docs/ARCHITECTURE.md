@@ -27,3 +27,8 @@ Conservative limits: up to 5000 files; each at most 25 MiB, sum at most 250 MiB,
 ## Manual customization boundary
 
 Homeport intentionally has no profile-import/merge engine. Users can compare generic templates with existing settings and make their own changes using native Codex configuration and MCP commands. The backup engine can preserve selected global files; it does not provision project policy, external tools, authentication or server authorization. A configuration value is not evidence of the active chat model or account entitlement.
+
+
+## Prepared profile bootstrap (0.0.6)
+
+The public setup layer is separate from private snapshot recovery. `scripts/bootstrap.ps1` and `scripts/bootstrap.py` create only missing global `AGENTS.md`, `config.toml` and included original text-only skills under `CODEX_HOME`. A dry-run JSONL plan is the default; writing needs explicit apply. Existing files, login/session state, selected model, approval/sandbox and personal MCP entries are never overwritten. Optional official CLI install and Windows Store Desktop install are separate, explicit operations. Linux Desktop preview uses the OS-native OpenAI package. Existing recovery schema and conservative limits remain unchanged.
