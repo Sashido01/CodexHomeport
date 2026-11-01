@@ -14,7 +14,7 @@ param(
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-$Version = '0.0.2'
+$Version = '0.0.3'
 $MaxFiles = 5000
 $MaxFileBytes = 25MB
 $MaxTotalBytes = 250MB
@@ -94,6 +94,9 @@ function Assert-PrivateDestination([string]$Dir) {
         if ((Test-Path -LiteralPath $probe) -and $git) {
             $inside = & git -C $probe rev-parse --is-inside-work-tree 2>$null
             if ($LASTEXITCODE -eq 0 -and $inside -eq 'true') { throw 'Backup location inside Git repo is forbidden' }
+            # A failed rev-parse is expected for a private directory outside Git.
+            # Do not leak that expected native exit code as this script's result.
+            $global:LASTEXITCODE = 0
             break
         }
         $parent = [System.IO.Path]::GetDirectoryName($probe)

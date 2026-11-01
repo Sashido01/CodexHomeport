@@ -7,3 +7,5 @@ Public Git is strictly source, generic examples, tests, CI and documentation. No
 ## Acceptance confirmation (2026-11-01)
 
 The live-profile inventory for this acceptance is maintained outside this repository. It records component names and coverage only; configuration values, credentials, history, databases, logs and backup contents are excluded from public source and the public acceptance evidence.
+
+The Windows engine normalizes the expected non-Git result of its private-destination probe so a successful backup or restore reports a successful process exit. Unexpected path or verification failures remain fail-closed.

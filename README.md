@@ -21,7 +21,7 @@ CHANGELOG.md    release history
 AGENTS.md       repository-scoped Codex instructions
 ```
 
-**Version:** `0.0.2` (previous untagged `0.1.0` was an unreleased prototype). Tags advance from `v0.0.0`; see [versioning](docs/VERSIONING.md). The project is universal: no built-in developer-specific drive letter or home path. A local clone can live anywhere; only personal private snapshots belong outside that clone.
+**Version:** `0.0.3` (previous untagged `0.1.0` was an unreleased prototype). Tags advance from `v0.0.0`; see [versioning](docs/VERSIONING.md). The project is universal: no built-in developer-specific drive letter or home path. A local clone can live anywhere; only personal private snapshots belong outside that clone.
 
 **Included practical material:** [profile coverage matrix](docs/PROFILE-COVERAGE.md), [DevSecMLOps workflow](docs/DEVSECMLOPS.md), [reviewed public templates](templates), [maintainer GitHub procedure](docs/MAINTAINER.md), and [Codex acceptance task](docs/TASK_FOR_CODEX.md). Real installed configurations are deliberately not shipped. Users may copy/modify templates explicitly; Homeport never silently installs templates into a working profile.
 
@@ -99,7 +99,7 @@ python3 scripts/homeport.py restore --dir "$HOME/CodexHomeportBackups/first-snap
 
 **Границы гарантии:** не автоматическое восстановление всей истории Codex Desktop или его базы; не миграция авторизации; не проверка правильности всех MCP-серверов и сторонних навыков; не автоматическое преобразование путей Windows↔Linux. Это консервативное восстановление *конфигурационного профиля*, а не клонирование работающей сессии.
 
-## Статус реализации 0.0.2
+## Статус реализации 0.0.3
 
 - **Linux и Windows PowerShell 7:** изолированные profile flows прошли синтетические проверки; подробности и границы доказательств — в [VALIDATION.md](docs/VALIDATION.md).
 - **Штатный Codex CLI:** существующая установка найдена и отвечает на `--version`. Установка, обновление и вход не выполнялись; Homeport использует официальный установщик только по явному действию пользователя.
@@ -120,7 +120,7 @@ The tracked-file scanner is a heuristic, **not a substitute for human review or 
 
 ## Quick start (English)
 
-Codex Homeport ships native **Codex CLI** installation entry points and a separate, private profile-backup mechanism. It does **not** distribute Codex, credentials, chat transcripts, or proprietary configurations. Run `python3 scripts/homeport.py --help` on Linux/macOS, or `pwsh -File scripts/homeport.ps1 -Action Status` on Windows. Start with a backup and restore dry-run, then use `--apply` / `-Apply` to write. Windows functionality is provided but not yet exercised on real Windows hardware. See the Russian instructions above for exact commands.
+Codex Homeport ships native **Codex CLI** installation entry points and a separate, private profile-backup mechanism. It does **not** distribute Codex, credentials, chat transcripts, or proprietary configurations. Run `python3 scripts/homeport.py --help` on Linux/macOS, or `pwsh -File scripts/homeport.ps1 -Action Status` on Windows. Start with a backup and restore dry-run, then use `--apply` / `-Apply` to write. The PowerShell path and interactive launcher passed synthetic Windows acceptance; see [VALIDATION.md](docs/VALIDATION.md) for the exact evidence boundary. See the Russian instructions above for exact commands.
 
 ## License & trademark
 
@@ -128,4 +128,4 @@ MIT — see [LICENSE](LICENSE). "Codex" and "OpenAI" refer to products of OpenAI
 
 ### Windows launcher
 
-Double-click `Homeport.cmd` to open a single native PowerShell menu for inspection, official CLI installation, export and dry-run/confirmed restore. It needs PowerShell 7 and does not bypass the original Codex installation or sign-in system. The Windows menu path has not been physically tested on a Windows device.
+Double-click `Homeport.cmd` to open a single native PowerShell menu for inspection, official CLI installation, export and dry-run/confirmed restore. It needs PowerShell 7 and does not bypass the original Codex installation or sign-in system. The menu and read-only status action were exercised interactively; applying a snapshot to the real profile was not part of acceptance.

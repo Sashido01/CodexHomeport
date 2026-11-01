@@ -136,7 +136,7 @@ class HomeportTest(unittest.TestCase):
         self.assertFalse(any('AUTH SECRET' in x for x in logfile.read_text().splitlines()))
 
     def test_version_micro(self):
-        self.assertEqual(self.run_cli('version')['homeport'], '0.0.2')
+        self.assertEqual(self.run_cli('version')['homeport'], '0.0.3')
 
     def test_manifest_invalid_sizes_and_digests(self):
         self.make()

@@ -3,7 +3,7 @@
 $ErrorActionPreference = 'Stop'
 $engine = Join-Path $PSScriptRoot 'homeport.ps1'
 $backupRoot = Join-Path $HOME 'CodexHomeportBackups'
-Write-Host 'Codex Homeport 0.0.2 (unofficial)' -ForegroundColor Cyan
+Write-Host 'Codex Homeport 0.0.3 (unofficial)' -ForegroundColor Cyan
 Write-Host '1 - Status / read-only diagnostics'
 Write-Host '2 - Install/update OFFICIAL Codex CLI'
 Write-Host '3 - Export private profile snapshot'

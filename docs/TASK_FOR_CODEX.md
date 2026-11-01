@@ -1,4 +1,4 @@
-# Codex acceptance task: Homeport v0.0.2 Windows + GitHub closure
+# Codex acceptance task: Homeport v0.0.3 Windows + GitHub closure
 
 Scope: one closure task only; do not start unrelated improvements. Working directory: the repository folder chosen by the maintainer (no absolute path in source). Prefer `gpt-6-luna` at Medium effort when actually available; retain any working user-selected model if not. Use Low for documentation-only edits and justify any escalation. Do not select nonexistent model IDs, and do not block the task merely because a preferred model is absent.
 

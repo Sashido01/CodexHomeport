@@ -2,6 +2,11 @@
 
 All entries describe implemented, tested changes; no claim of remote release is implied.
 
+## [0.0.3] - 2026-11-01
+
+- Fixed the Windows PowerShell engine leaving `$LASTEXITCODE` set to 128 after the expected non-Git probe of an outside-Git private directory. Successful backup/restore commands now return a successful process status.
+- Added this fix after GitHub Actions showed all PowerShell profile operations passing but the Windows job exiting 1. The failed `v0.0.2` run is recorded in validation evidence; `v0.0.3` must pass before closure.
+
 ## [0.0.2] - 2026-11-01
 
 - Corrected the launcher menu's displayed version and aligned the Python and PowerShell engines with the release version.

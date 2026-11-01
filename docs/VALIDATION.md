@@ -25,4 +25,14 @@ The following paragraph records the historical `v0.0.1` state and is superseded 
 
 **PASS:** Python 3.14 Windows suite: 17/17 tests. Public tracked-tree heuristic: 37 files scanned, PASS. Python compile: PASS. `git diff --check`: PASS before release commit.
 
-**NOT_VERIFIED:** GitHub Actions result for the newly published commit/tag until the actual run completes. Desktop UI startup/session continuity, MCP reconnect functionality, and physical-device acceptance are outside this synthetic profile test. No live profile snapshot or restore was performed.
+**NOT_VERIFIED:** Desktop UI startup/session continuity, MCP reconnect functionality, and physical-device acceptance are outside this synthetic profile test. No live profile snapshot or restore was performed. The remote Actions outcome is recorded below.
+
+## GitHub result and follow-up — v0.0.2
+
+**PARTIAL:** Public `main` and tags `v0.0.0`, `v0.0.1`, and `v0.0.2` were published without force. GitHub Actions run [41331843139](https://github.com/Sashido01/CodexHomeport/actions/runs/41331843139) passed both Python matrix jobs, including the public-tree guard, but failed `powershell-native` at process exit. The log shows Version, Status, Backup, Verify, dry-run, and Apply all reporting PASS; the step then exited 1 because the expected failed `git rev-parse` outside a worktree left `$LASTEXITCODE` set to 128. This is a real integration defect, fixed in `0.0.3`.
+
+**PASS:** GitHub vulnerability alerts, Dependabot security updates, and private vulnerability reporting are enabled. Secret scanning and push protection were already enabled. Main branch protection is still pending final configuration after publication/CI.
+
+## Windows and CI recheck — v0.0.3
+
+**NOT_VERIFIED:** The PowerShell fix was applied after the failed remote run. Re-run local synthetic PowerShell acceptance and GitHub Actions for the new `main` SHA and `v0.0.3` tag before closing this task.
