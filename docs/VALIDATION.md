@@ -31,8 +31,12 @@ The following paragraph records the historical `v0.0.1` state and is superseded 
 
 **PARTIAL:** Public `main` and tags `v0.0.0`, `v0.0.1`, and `v0.0.2` were published without force. GitHub Actions run [41331843139](https://github.com/Sashido01/CodexHomeport/actions/runs/41331843139) passed both Python matrix jobs, including the public-tree guard, but failed `powershell-native` at process exit. The log shows Version, Status, Backup, Verify, dry-run, and Apply all reporting PASS; the step then exited 1 because the expected failed `git rev-parse` outside a worktree left `$LASTEXITCODE` set to 128. This is a real integration defect, fixed in `0.0.3`.
 
-**PASS:** GitHub vulnerability alerts, Dependabot security updates, and private vulnerability reporting are enabled. Secret scanning and push protection were already enabled. Main branch protection is still pending final configuration after publication/CI.
+**PASS:** GitHub vulnerability alerts, Dependabot security updates, and private vulnerability reporting are enabled. Secret scanning and push protection were already enabled. `main` protection now enforces the branch rule for administrators and blocks force-push and deletion; direct non-force updates remain allowed.
 
 ## Windows and CI recheck — v0.0.3
 
-**NOT_VERIFIED:** The PowerShell fix was applied after the failed remote run. Re-run local synthetic PowerShell acceptance and GitHub Actions for the new `main` SHA and `v0.0.3` tag before closing this task.
+**PASS:** Local PowerShell 7 synthetic acceptance, including successful `$LASTEXITCODE` after Backup and Apply, passed. GitHub Actions branch run [41332039873](https://github.com/Sashido01/CodexHomeport/actions/runs/41332039873) and tag run [41332045423](https://github.com/Sashido01/CodexHomeport/actions/runs/41332045423) both passed on exact release SHA `1ed3f61c21792360e1243808d3d838ee0fc1ea36`. Each run passed `python-profile (ubuntu-latest)`, `python-profile (windows-latest)`, and `powershell-native`.
+
+**PASS:** The public repository displays the current README and source tree. The `v0.0.3` release tag remains on its tested source SHA; a documentation-only validation update follows on `main`. Tags `v0.0.0` through `v0.0.3` preserve the original history. Security settings are enabled as recorded above. No force push was used.
+
+**NOT_VERIFIED:** Codex Desktop session continuity, MCP reconnect behavior, and physical-device acceptance are outside this profile-tool task. No live user profile snapshot or restore was performed.

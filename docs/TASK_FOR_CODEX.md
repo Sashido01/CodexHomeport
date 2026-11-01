@@ -4,7 +4,7 @@ Scope: one closure task only; do not start unrelated improvements. Working direc
 
 **Goal:** verify and finish the already built, path-independent **native** Codex Homeport on the real Windows host, then publish its reviewed source to the owner's **public** GitHub repository. Never publish profile backups, credentials, conversations, logs or local device details.
 
-**Closure status:** this is one bounded acceptance task. Final evidence is recorded in `docs/VALIDATION.md`; once the current GitHub Actions run is confirmed, stop without creating follow-up tasks.
+**Closure status:** COMPLETE on 2026-11-01. Windows synthetic acceptance, native CLI status, public publication, release tags, security settings and `v0.0.3` GitHub Actions are recorded in `docs/VALIDATION.md`. Stop here; do not create follow-up tasks.
 
 **Workflow:**
 1. Inspect the actual local checkout, status, branches, Git tags, `VERSION`, README, scripts and prior tests. Do not overwrite any newer changes. Identify the canonical repo folder; do not encode its absolute path into public code.
