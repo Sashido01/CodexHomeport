@@ -10,6 +10,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   python-profile:
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -24,6 +25,7 @@ jobs:
       - name: Public tracked-tree guard
         run: python scripts/check-public-tree.py
   powershell-native:
+    timeout-minutes: 15
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.2, pinned
@@ -52,3 +54,12 @@ jobs:
           if ((Get-Content -LiteralPath (Join-Path $codex 'config.toml') -Raw) -notmatch 'changed = true') { throw 'Dry-run changed target' }
           & ./scripts/homeport.ps1 -Action Restore -UserHome $root -BackupDir $snapshot -Apply
           if ((Get-Content -LiteralPath (Join-Path $codex 'config.toml') -Raw) -notmatch 'test-model') { throw 'Restore is incorrect' }
+  docs-and-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1, pinned
+        with:
+          persist-credentials: false
+      - name: Check paired documentation and microversion
+        run: python3 scripts/check-docs.py

@@ -2,6 +2,14 @@
 
 All entries describe implemented, tested changes; no claim of remote release is implied.
 
+## [0.0.4] - 2026-11-01 (development, not yet tagged)
+
+- Merged the reviewed Dependabot checkout v7.0.1 update. Its earlier PR failure was the already-fixed Windows PowerShell exit-status defect, not checkout.
+- Separated English and Russian user guides, security, contribution, maintenance and CI policy documentation, with language navigation.
+- Added CI documentation parity and version checks plus execution timeouts. Retained least-privilege read-only permissions and checkout SHA pinning.
+- Documented native per-repository Git identity checks to prevent incorrect author attribution. Existing published tags and commits remain unchanged.
+- Remote combined-main checks and any release tag must be verified before claiming a 0.0.4 release.
+
 ## [0.0.3] - 2026-11-01
 
 - Fixed the Windows PowerShell engine leaving `$LASTEXITCODE` set to 128 after the expected non-Git probe of an outside-Git private directory. Successful backup/restore commands now return a successful process status.

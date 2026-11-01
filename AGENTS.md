@@ -5,5 +5,7 @@
 - Changes touching backup/restore must have fail-closed tests for paths, hashes, dry-run, symlinks, and rollback behavior.
 - Preserve the caller's `config.toml` and AGENTS settings exactly as backed up; do not impose a model, provider, key or sandbox setting.
 - Prefer native OS capabilities, no external dependencies for the profile engine, no hidden background services.
+- Keep user-facing docs/en and docs/ru content synchronized but separate. Run scripts/check-docs.py.
+- Check repository-local Git author/email and authenticated GitHub login before committing; never use placeholder addresses.
 - Maintain docs/RESEARCH.md, docs/VALIDATION.md, CHANGELOG.md with observed evidence. Distinguish tests from real device acceptance.
 - Use local Git commits. Do not push, merge or publish without explicit authorization. Do not touch unrelated projects.
