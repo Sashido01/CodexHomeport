@@ -8,8 +8,11 @@
 | Global `~/.codex/skills`, `rules`, `prompts`, `memories` | One example skill | Regular allowed files | Optional by filesystem presence; no claims that all skills run |
 | `~/.agents/skills` | Example | Regular allowed files | Executable skill scripts are untrusted code |
 | Project-level `.codex/` and `AGENTS.md` | Only project-specific examples | No | Reside in their OWN Git repos; preserve relevant policies there |
-| MCP server registrations | No actual servers | Config file only | Must separately install tools and re-authorize; do not copy token environment |
+| MCP server registrations | Sanitised command guidance only | Config if present | Install dependencies and re-authorize separately; never copy token environment |
 | Model choice / effort / sandbox / approval | Policy template, no pinned choice | Config if present | Use available model, do not silently override |
+| Model routing and allowance preferences | General advisory guidance only | User decides | No model auto-switch, account entitlement assumption, or universal quota thresholds |
+| Project-level settings and instructions | No live project profile | No | Remain with the corresponding project repository and its owner |
+| Hooks and external tools | No installed components | No | Inspect compatibility and trust, then install through the component's documented path |
 | Desktop chat history and state in Documents, `sessions`, SQLite | Never | Never | Official app owns its state; separate backup policy |
 | `auth.json`, keychains, passwords, tokens, `.env` | Never | Never | Sign in again using official flow |
 | Windows registry, proxy, firewall, routing, Hiddify/Xray | Never | Never | OS-specific, must be manually inspected and authorized |

@@ -51,4 +51,16 @@ The following paragraph records the historical `v0.0.1` state and is superseded 
 
 **PARTIAL — settings:** GitHub's public branch endpoint reports `main.protected=true` but `required_status_checks.enforcement_level=off` and an empty required-check list. Branch protection detail endpoint returned 403 for this integration. Therefore mandatory CI checks and exact protection rules cannot be confirmed as enforced; an administrator must inspect Settings → Rules/Actions. Source files cannot turn those settings on.
 
-**NOT_VERIFIED:** Local `D:\GitHub\CodexHomeport` Git state and identity, local JSONL logs, a new `v0.0.4` release tag, native Codex installer/GUI execution, live profile restore and MCP reconnection. The remote updates were made through the authorized GitHub connection, not through the user's local Git checkout. Do not call 0.0.4 a fully accepted release before those separate release criteria are met.
+**NOT_VERIFIED:** Local checkout state and identity, local JSONL logs, a new `v0.0.4` release tag, native Codex installer/GUI execution, live profile restore and MCP reconnection. The remote updates were made through the authorized GitHub connection, not through the user's local Git checkout. Do not call 0.0.4 a fully accepted release before those separate release criteria are met.
+
+## Portable customization and Windows acceptance — v0.0.5 development (2026-11-01)
+
+**PASS:** PowerShell 7.5.4 parsed the Windows engine/menu and `tests/test_homeport.ps1` passed against an isolated temporary profile. The test verified the version and status commands, a private-data exclusion, manifest entries and SHA-256, verify, non-writing restore dry-run, explicit apply, preservation of replaced files, an induced mid-apply failure with rollback of the earlier replacement, and rejection of a corrupted data file, invalid digest, traversal path, and source/destination symlinks. The temporary profile, snapshot, rollback and synthetic audit log were removed. This is synthetic Windows evidence, not a live-profile restore.
+
+**PASS:** Python unittest suite: 17/17. Public tracked-tree heuristic passed for all 54 staged files. The bilingual documentation and local Markdown-link checker passed at version `0.0.5`. Python compile and staged `git diff --check` passed.
+
+**PASS:** The actual `Homeport.cmd` was opened in an interactive Windows terminal, displayed menu version `0.0.5`, and exited with choice `0`. The native Codex CLI returned `codex-cli 0.166.0`; `Homeport.ps1 -Action Status` detected it with PASS. No install, update, login, profile backup, or restore was run against the real user profile.
+
+**PASS:** A private read-only inventory of the actual user profile and MyCodex components was saved outside Git. It contains selected identifiers and component names only; config contents, authentication, history, databases, logs and backups were not read into the public repository. MyCodex and the live Codex profile were not modified.
+
+**NOT_VERIFIED:** Codex Desktop GUI/session continuity, whether configured MCP servers can connect, live-profile restore, and cross-platform portability beyond existing Linux CI. The config model default is not evidence of the active model in this conversation. Remote PR and CI acceptance for v0.0.5 remains pending until observed.

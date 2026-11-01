@@ -2,6 +2,8 @@
 
 [Русский](../ru/GETTING_STARTED.md) | [Overview](README.md)
 
+Optional templates and settings guidance: [Codex customization](CUSTOMIZATION.md).
+
 Use an ordinary OS account, not an administrator. Review the scripts first. Keep snapshots **outside any Git repository** and private. On Windows use PowerShell 7; on Linux/macOS use Python 3.9+.
 
 ## Windows

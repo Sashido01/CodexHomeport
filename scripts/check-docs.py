@@ -3,9 +3,10 @@
 from pathlib import Path
 import re
 import sys
+from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-PAIRED = ("README.md", "GETTING_STARTED.md", "SECURITY.md", "MAINTENANCE.md", "CI_POLICY.md", "CONTRIBUTING.md")
+PAIRED = ("README.md", "GETTING_STARTED.md", "SECURITY.md", "MAINTENANCE.md", "CI_POLICY.md", "CONTRIBUTING.md", "CUSTOMIZATION.md")
 
 def main():
     errors = []
@@ -14,6 +15,15 @@ def main():
             path = ROOT / "docs" / lang / name
             if not path.is_file() or len(path.read_text(encoding="utf-8").strip()) < 80:
                 errors.append(f"Missing or empty: docs/{lang}/{name}")
+    for source in (ROOT / "README.md", *(ROOT / "docs").rglob("*.md")):
+        text = source.read_text(encoding="utf-8")
+        for target in re.findall(r"\[[^\]]*\]\(([^)]+)\)", text):
+            parsed = urlsplit(target.strip())
+            if parsed.scheme or parsed.netloc or not parsed.path.endswith(".md"):
+                continue
+            linked = (source.parent / unquote(parsed.path)).resolve()
+            if not linked.is_file():
+                errors.append(f"Broken local Markdown link: {source.relative_to(ROOT)} -> {target}")
     version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
     if not re.fullmatch(r"0\.0\.\d+", version):
         errors.append(f"Invalid microversion: {version!r}")
