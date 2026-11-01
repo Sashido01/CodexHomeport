@@ -12,3 +12,13 @@
 ## Known portability limits
 
 Cross-OS config files may contain absolute paths, external MCP executable names, environment variable conventions, shell hooks, sandbox differences, UI references and keyring settings. These require a post-restore review. External skill symlinks and system skill packages aren't copied. Codex Desktop's native installed version is a separate distribution responsibility. A successful hash check proves bytes were transported unchanged, **not** that Codex will load every skill or server correctly.
+
+
+## Sequence / data-plane versus control-plane
+
+- **Control plane (public)**: source, JSON manifest schema, docs and harmless templates. `Homeport.cmd` is the only Windows menu, no extra daemon or browser runtime.
+- **Data plane (private)**: actual local `~/.codex` allowlisted files, private snapshot, content hashes, rollback staging, private JSONL. Never copied into Git by Homeport.
+- **Install plane (official)**: independent upstream OpenAI CLI installer, invoked only explicitly. No binary distributed here; Desktop install/update continues in its official application channel.
+- **Publish plane (native Git/GitHub)**: local commits + annotated tags, CI and GitHub `gh`/Git publication performed by the owner. Profiles never cross the publication plane.
+
+Conservative limits: up to 5000 files; each at most 25 MiB, sum at most 250 MiB, manifest at most 4 MiB. This is deliberate protection against pathological input, not a promise to preserve arbitrarily huge custom skills. Hash checks detect corruption, not malicious rewrites of data plus manifest.

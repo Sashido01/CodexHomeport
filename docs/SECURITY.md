@@ -22,3 +22,12 @@ All snapshot entries are checked against a small allowlist. Rooted paths, traver
 Supported: user config, profile `*.config.toml`, instructions, globally installed skills stored as regular files, rules, prompts, memory files (when present). Excluded: login, keychain, active session continuity, Desktop app internals, per-project source code, third-party executables and the complete dependency graph of custom skills.
 
 For especially sensitive environments, prefer an encrypted OS-level backup system rather than this plaintext portability tool.
+
+
+## Additional supply-chain and public-push safeguards (v0.0.1)
+
+The `scripts/check-public-tree.py` guard inspects Git-tracked files and common token patterns. It has false negatives and does **not** scan old remote Git history, LFS, artifacts or CI secrets. Review `git log --stat`, `git diff --cached`, and external scanners if available before any remote push. Do not attach private logs to reports. Homeport copies skill scripts as data without executing them, but later launching Codex could cause execution of untrusted skill/MCP code. Review before use.
+
+Default limits: 5000 files / 25 MiB per file / 250 MiB total; manifest max 4 MiB. To avoid source-to-target mutation races, snapshot contents are staged in a private rollback folder before changes. A source file may still change while being copied and this results in a fail-closed hash mismatch. PowerShell and Python both need real-platform acceptance before claiming identical security posture. Windows ACLs remain dependent on the current user's filesystem; do not treat standard PowerShell directory creation as guaranteed strict isolation.
+
+Homeport rejects writing private backup and audit files within the live Codex/agents profile and refuses symlinked backup ancestors; do not bypass these checks.

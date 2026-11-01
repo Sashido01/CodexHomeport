@@ -1,7 +1,20 @@
 # Changelog
 
-## 0.1.0 — 2026-11-01
+All entries describe implemented, tested changes; no claim of remote release is implied.
 
-Initial public-ready source: researched official native CLI install/update paths, portable restricted profile snapshot format, Python Unix and PowerShell Windows engines, local rollback, hash integrity checks, dry-run, security document, unit/integration tests, CI configuration and Git hygiene. Windows installer/restore and real desktop not yet verified.
+## [0.0.1] - 2026-11-01
 
-Local audit export is available via `--audit-log` / `-AuditLog`; per-file validation events never include file contents. The final synthetic suite has 11 passing cases on Linux.
+- Added portable public repository foundation, sanitised AGENTS/config/skill templates and explicit ADR decisions.
+- Added profile coverage matrix, DevSecMLOps controls, release/publishing procedure, and scoped Codex acceptance task.
+- Hardened both backup engines with manifest entry/size limits and staging before restore; Python also rejects case-insensitive filename collisions and symlinked backup paths.
+- Strengthened source-only GitHub CI (synthetic Windows PowerShell smoke planned for GitHub Actions) and added a heuristic public-tree check.
+- Synthetic Python Linux regression suite extended from 11 to 17 tests. Windows runtime and GitHub CI remain NOT_VERIFIED until actually executed.
+
+## [0.0.0] - 2026-11-01
+
+- Established tagged baseline for official Codex CLI installation entry points and private profile backup/recovery engines.
+- Recorded public-source/private-profile architecture and repository microversion policy.
+
+## Unreleased prototype (untagged earlier commit)
+
+The former draft described itself as 0.1.0. No public release was made; historical source commit is preserved for audit while public versioning starts at 0.0.0.

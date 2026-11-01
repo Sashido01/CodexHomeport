@@ -135,6 +135,62 @@ class HomeportTest(unittest.TestCase):
         self.assertTrue(any(x['action'] == 'backup' and x['status'] == 'PASS' for x in rows))
         self.assertFalse(any('AUTH SECRET' in x for x in logfile.read_text().splitlines()))
 
+    def test_version_micro(self):
+        self.assertEqual(self.run_cli('version')['homeport'], '0.0.1')
+
+    def test_manifest_invalid_sizes_and_digests(self):
+        self.make()
+        f = self.dest / 'manifest.json'
+        original = json.loads(f.read_text())
+        for bad in (-1, True, 26 * 1024 * 1024, '1'):
+            manifest = json.loads(json.dumps(original))
+            manifest['files'][0]['size'] = bad
+            f.write_text(json.dumps(manifest))
+            self.run_cli('verify', '--dir', self.dest, good=False)
+        manifest = json.loads(json.dumps(original))
+        manifest['files'][0]['sha256'] = '0' * 63
+        f.write_text(json.dumps(manifest))
+        self.run_cli('verify', '--dir', self.dest, good=False)
+
+    def test_portable_casefold_collision_rejected(self):
+        self.make()
+        src = self.dest / 'data' / 'codex' / 'AGENTS.md'
+        src = self.dest / 'data' / 'codex' / 'skills' / 'useful' / 'SKILL.md'
+        other = src.with_name('skill.md')
+        other.write_bytes(src.read_bytes())
+        m = self.dest / 'manifest.json'
+        data = json.loads(m.read_text())
+        twin = data['files'][0].copy()
+        twin = next(x.copy() for x in data['files'] if x['path'] == 'codex/skills/useful/SKILL.md')
+        twin['path'] = 'codex/skills/useful/skill.md'
+        data['files'].append(twin)
+        m.write_text(json.dumps(data))
+        self.run_cli('verify', '--dir', self.dest, good=False)
+
+    def test_private_paths_not_inside_codex_home(self):
+        self.run_cli('backup', '--dir', self.home / '.codex' / 'skills' / 'copy', good=False)
+        self.assertFalse((self.home / '.codex' / 'skills' / 'copy').exists())
+        self.run_cli('status', '--audit-log', self.home / '.codex' / 'skills' / 'audit.jsonl', good=False)
+        self.assertFalse((self.home / '.codex' / 'skills' / 'audit.jsonl').exists())
+
+    def test_backup_size_limits_fail_cleanly(self):
+        huge = self.home / '.codex' / 'skills' / 'useful' / 'large.txt'
+        with huge.open('wb') as f:
+            f.truncate(25 * 1024 * 1024 + 1)
+        self.run_cli('backup', '--dir', self.dest, good=False)
+        self.assertFalse(self.dest.exists())
+
+    def test_snapshot_path_symlink_parent_refused(self):
+        external = self.base / 'external'
+        external.mkdir()
+        link = self.base / 'linked'
+        try:
+            link.symlink_to(external, target_is_directory=True)
+        except (OSError, NotImplementedError):
+            self.skipTest('symlinks unavailable')
+        self.run_cli('backup', '--dir', link / 'copy', good=False)
+        self.assertFalse((external / 'copy').exists())
+
     def test_custom_codex_home(self):
         other = self.base / 'another_codex'
         other.mkdir()

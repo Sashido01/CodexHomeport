@@ -4,7 +4,7 @@
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('Status','Backup','Verify','Restore','Install')]
+    [ValidateSet('Status','Backup','Verify','Restore','Install','Version')]
     [string]$Action = 'Status',
     [string]$BackupDir,
     [string]$AuditLog,
@@ -14,7 +14,11 @@ param(
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-$Excluded = @('.git','.env','auth.json','history.jsonl','sessions','logs','log','cache','tmp','temp','packages','node_modules','__pycache__','secrets.json','credentials.json','token.json')
+$Version = '0.0.1'
+$MaxFiles = 5000
+$MaxFileBytes = 25MB
+$MaxTotalBytes = 250MB
+$Excluded = @('.git','.env','auth.json','history.jsonl','sessions','logs','log','backups','cache','tmp','temp','packages','node_modules','__pycache__','secrets.json','credentials.json','token.json','.ssh','id_rsa','id_ed25519','.aws','.azure')
 $DirAllow = @('codex/skills','codex/rules','codex/prompts','codex/memories','agents/skills')
 $FileAllow = @('codex/config.toml','codex/AGENTS.md','codex/instructions.md')
 $UserHome = [System.IO.Path]::GetFullPath($UserHome)
@@ -50,7 +54,7 @@ function Assert-Allow([string]$Rel) {
         $_ -eq '' -or $_ -eq '.' -or $_ -eq '..' -or $x -in $Excluded -or $x.StartsWith('.env') -or
         $x -match '(\.sqlite(-wal|-shm)?|\.pem|\.key)$' -or $x.EndsWith(' ') -or $x.EndsWith('.') -or
         $x -match '[<>"|?*]' -or $x -match '[\x00-\x1f]' -or
-        ($x.Split('.')[0] -in @('con','prn','aux','nul','com1','com2','com3','com4','lpt1','lpt2','lpt3'))
+        ($x.Split('.')[0] -in @('con','prn','aux','nul','com1','com2','com3','com4','com5','com6','com7','com8','com9','lpt1','lpt2','lpt3','lpt4','lpt5','lpt6','lpt7','lpt8','lpt9'))
     }) {
         throw "Excluded or unsafe manifest entry: $Rel"
     }
@@ -84,6 +88,8 @@ function Assert-PrivateDestination([string]$Dir) {
     $probe = [System.IO.Path]::GetFullPath($Dir)
     $git = Get-Command git -ErrorAction SilentlyContinue
     while ($true) {
+        $node = Get-Item -LiteralPath $probe -Force -ErrorAction SilentlyContinue
+        if ($node -and ($node.Attributes -band [System.IO.FileAttributes]::ReparsePoint)) { throw 'Private backup path contains symlink/reparse point' }
         if (Test-Path -LiteralPath (Join-Path $probe '.git')) { throw 'Backup location inside Git repo is forbidden' }
         if ((Test-Path -LiteralPath $probe) -and $git) {
             $inside = & git -C $probe rev-parse --is-inside-work-tree 2>$null
@@ -93,6 +99,14 @@ function Assert-PrivateDestination([string]$Dir) {
         $parent = [System.IO.Path]::GetDirectoryName($probe)
         if (-not $parent -or $parent -eq $probe) { break }
         $probe = $parent
+    }
+}
+function Assert-OutsideProfile([string]$FullPath) {
+    foreach ($root in $Roots.Values) {
+        $relative = [IO.Path]::GetRelativePath($root, $FullPath)
+        if ($relative -eq '.' -or (-not [IO.Path]::IsPathRooted($relative) -and $relative -ne '..' -and -not $relative.StartsWith('..\') -and -not $relative.StartsWith('../'))) {
+            throw 'Private backup/audit must not be inside a live profile'
+        }
     }
 }
 function File-Hash([string]$Path) {
@@ -131,11 +145,19 @@ function Verify-Snapshot([string]$Dir) {
     $manifest = Join-Path $Dir 'manifest.json'
     Assert-NotLink $manifest $Dir
     if (-not (Test-Path -LiteralPath $manifest -PathType Leaf)) { throw 'Missing manifest.json' }
+    if ((Get-Item -LiteralPath $manifest).Length -gt 4MB) { throw 'Manifest too large' }
     $info = Get-Content -LiteralPath $manifest -Raw -Encoding UTF8 | ConvertFrom-Json -AsHashtable
     if ($info.format -cne 'codex-homeport' -or $info.schema -ne 1 -or $info.files.Count -lt 1) { throw 'Unsupported/empty manifest' }
+    if ($info.files.Count -gt $MaxFiles) { throw 'Too many manifest entries' }
+    $totalBytes = [long]0
     $seen = @{}
     foreach ($entry in $info.files) {
         $rel = [string]$entry.path
+        if ($entry.size -isnot [int] -and $entry.size -isnot [long]) { throw 'Invalid manifest size' }
+        if ([long]$entry.size -lt 0 -or [long]$entry.size -gt $MaxFileBytes) { throw 'Invalid manifest size' }
+        $totalBytes += [long]$entry.size
+        if ($totalBytes -gt $MaxTotalBytes) { throw 'Manifest size limit exceeded' }
+        if ([string]$entry.sha256 -cnotmatch '^[a-f0-9]{64}$') { throw 'Invalid SHA256' }
         Assert-Allow $rel
         if ($seen.ContainsKey($rel)) { throw 'Duplicate manifest path' }
         $seen[$rel] = $true
@@ -149,13 +171,22 @@ function Verify-Snapshot([string]$Dir) {
     return $info
 }
 try {
-    if ($AuditLog) { Assert-PrivateDestination ([IO.Path]::GetFullPath($AuditLog)) }
-    if ($Action -eq 'Install') {
+    if ($AuditLog) {
+        try {
+            Assert-PrivateDestination ([IO.Path]::GetFullPath($AuditLog))
+            Assert-OutsideProfile ([IO.Path]::GetFullPath($AuditLog))
+        } catch {
+            $AuditLog = $null
+            throw
+        }
+    }
+    if ($Action -eq 'Version') {
+        Log-Event 'version' 'PASS' @{ homeport = $Version }
+    } elseif ($Action -eq 'Install') {
         $temp = Join-Path ([IO.Path]::GetTempPath()) ("codex-official-" + [guid]::NewGuid().ToString('N') + '.ps1')
         try {
             Invoke-WebRequest -Uri 'https://chatgpt.com/codex/install.ps1' -OutFile $temp -MaximumRedirection 5 -ErrorAction Stop
             if ((Get-Item -LiteralPath $temp).Length -lt 1000) { throw 'Unexpectedly small official installer; not running' }
-            $env:CODEX_NON_INTERACTIVE = '1'
             & $temp
             if (-not $?) { throw 'Official installer returned error' }
             Log-Event 'install' 'PASS' @{ source = 'https://chatgpt.com/codex/install.ps1' }
@@ -167,19 +198,26 @@ try {
     } else {
         if (-not $BackupDir) { throw '-BackupDir is required' }
         $BackupDir = [System.IO.Path]::GetFullPath($BackupDir)
+        Assert-OutsideProfile $BackupDir
         if ($Action -eq 'Backup') {
             Assert-PrivateDestination $BackupDir
             if (Test-Path -LiteralPath $BackupDir) { throw 'Backup folder already exists; choose a new folder' }
             $entries = Get-Entries
             if ($entries.Count -eq 0) { throw 'No user config files found' }
+            if ($entries.Count -gt $MaxFiles) { throw 'Too many profile files' }
             New-Item -ItemType Directory -Path (Join-Path $BackupDir 'data') -Force | Out-Null
             try {
                 $rows = @()
+                $totalBytes = [long]0
                 foreach ($rel in @($entries.Keys | Sort-Object -CaseSensitive)) {
                     $target = Join-Path (Join-Path $BackupDir 'data') ($rel.Replace('/',[IO.Path]::DirectorySeparatorChar))
                     New-Item -ItemType Directory -Path ([IO.Path]::GetDirectoryName($target)) -Force | Out-Null
+                    $before = (Get-Item -LiteralPath $entries[$rel]).Length
+                    $totalBytes += $before
+                    if ($before -gt $MaxFileBytes -or $totalBytes -gt $MaxTotalBytes) { throw 'Profile exceeds size limit' }
                     Copy-Item -LiteralPath $entries[$rel] -Destination $target -ErrorAction Stop
                     $size = (Get-Item -LiteralPath $target).Length
+                    if ($size -ne $before) { throw 'Source changed during backup' }
                     $digest = File-Hash $target
                     $rows += @{ path = $rel; size = $size; sha256 = $digest }
                     Log-File 'backup' $rel $size $digest
@@ -206,12 +244,19 @@ try {
                 Log-Event 'restore-plan' 'DRY_RUN' @{ entries = $planned.Count; existing_to_replace = $conflicts; new = ($planned.Count-$conflicts) }
             } else {
                 Assert-PrivateDestination $BackupDir
-                $rollback = "$BackupDir-rollback-$([DateTimeOffset]::UtcNow.ToString('yyyyMMddTHHmmssZ'))"
+                $rollback = "$BackupDir-rollback-$([DateTimeOffset]::UtcNow.ToString('yyyyMMddTHHmmssZ'))-$([guid]::NewGuid().ToString('N').Substring(0,8))"
                 if (Test-Path -LiteralPath $rollback) { throw 'Rollback path already exists' }
                 New-Item -ItemType Directory -Path (Join-Path $rollback 'old') -Force | Out-Null
+                New-Item -ItemType Directory -Path (Join-Path $rollback 'staged') -Force | Out-Null
                 $touched = [Collections.Generic.List[object]]::new()
                 try {
                     foreach ($row in $planned) {
+                        $staged = Join-Path (Join-Path $rollback 'staged') ($row.path.Replace('/',[IO.Path]::DirectorySeparatorChar))
+                        New-Item -ItemType Directory -Path ([IO.Path]::GetDirectoryName($staged)) -Force | Out-Null
+                        Copy-Item -LiteralPath $row.source -Destination $staged -ErrorAction Stop
+                        $expected = @($info.files | Where-Object { $_.path -ceq $row.path })[0].sha256
+                        if ((File-Hash $staged) -cne [string]$expected) { throw 'Source changed during staging' }
+                        $row.source = $staged
                         if ($row.existed) {
                             if (-not (Test-Path -LiteralPath $row.target -PathType Leaf)) { throw 'Destination not regular file' }
                             $old = Join-Path (Join-Path $rollback 'old') ($row.path.Replace('/',[IO.Path]::DirectorySeparatorChar))

@@ -6,6 +6,25 @@
 
 > [Русский](#быстрый-старт-windows-и-linux) · [English](#quick-start-english)
 
+## Состав проекта / repository map
+
+```text
+.github/         CI, Dependabot, SECURITY, issue & pull request templates
+scripts/         native Windows/Unix backup engines, official installer, public-tree guard
+tests/           isolated synthetic profile and security regression tests
+templates/       optional, sanitized AGENTS/config and a recovery skill
+ docs/           ADRs, architecture, research, security, profile coverage, operations
+Homeport.cmd     Windows interactive launcher (PowerShell 7 required)
+Homeport.sh      Unix status launcher
+VERSION         single source of the project's microversion
+CHANGELOG.md    release history
+AGENTS.md       repository-scoped Codex instructions
+```
+
+**Version:** `0.0.1` (previous untagged `0.1.0` was an unreleased prototype). Tags advance `v0.0.0` → `v0.0.1`; see [versioning](docs/VERSIONING.md). The project is universal: no built-in developer-specific drive letter or home path. A local clone can live anywhere; only personal private snapshots belong outside that clone.
+
+**Included practical material:** [profile coverage matrix](docs/PROFILE-COVERAGE.md), [DevSecMLOps workflow](docs/DEVSECMLOPS.md), [reviewed public templates](templates), [maintainer GitHub procedure](docs/MAINTAINER.md), and [Codex acceptance task](docs/TASK_FOR_CODEX.md). Real installed configurations are deliberately not shipped. Users may copy/modify templates explicitly; Homeport never silently installs templates into a working profile.
+
 ## Быстрый старт (Windows и Linux)
 
 **Прежде чем начать:** внимательно прочитайте код загрузчика и [документ о безопасности](docs/SECURITY.md). Работайте от своей обычной учётной записи, **не от администратора**. Вся информация пользователя сохраняется **только локально, вне Git**. Закройте работающие сеансы Codex на время восстановления файлов.
@@ -72,7 +91,7 @@ python3 scripts/homeport.py restore --dir "$HOME/CodexHomeportBackups/first-snap
 
 ## Поведение восстановления
 
-1. Загружается `manifest.json` (версия формата 1) и проверяются допустимые пути, SHA-256 и размеры **всех** файлов.
+1. Загружается `manifest.json` (версия формата 1; максимум 5000 файлов, 25 MiB на файл, 250 MiB всего) и проверяются допустимые пути, SHA-256 и размеры **всех** файлов.
 2. По умолчанию `Restore` только считает изменения. Никакого обновления конфигурации без `--apply` или `-Apply`.
 3. Перед записью существующие целевые файлы копируются в соседний каталог `*-rollback-YYYYMMDDTHHMMSSZ` **вне Git**.
 4. Обновляются только файлы, перечисленные в манифесте. Другие существующие настройки и файлы не удаляются.
@@ -80,15 +99,24 @@ python3 scripts/homeport.py restore --dir "$HOME/CodexHomeportBackups/first-snap
 
 **Границы гарантии:** не автоматическое восстановление всей истории Codex Desktop или его базы; не миграция авторизации; не проверка правильности всех MCP-серверов и сторонних навыков; не автоматическое преобразование путей Windows↔Linux. Это консервативное восстановление *конфигурационного профиля*, а не клонирование работающей сессии.
 
-## Статус реализации 0.1.0
+## Статус реализации 0.0.1
 
-- **Работает и проверено на изолированной Linux-среде:** экспорт, проверка хешей, dry-run, восстановление, сохранение предыдущих файлов, защита от ряда подмен/утечек (11 unit/integration tests).
+- **Работает и проверено на изолированной Linux-среде:** экспорт, проверка хешей, dry-run, восстановление, сохранение предыдущих файлов, защита от ряда подмен/утечек (17 synthetic Python unit/integration tests on Linux at the time of this release).
 - **Windows PowerShell 7:** независимая нативная реализация подготовлена, но физический прогон на Windows **не выполнялся** в среде сборки. Не объявляем её принятой.
 - **Официальная установка OpenAI**: источник и механизмы проверены по документации, но реальное скачивание, запуск установщика и обновление рабочего Codex намеренно не выполнялись на тестовой машине.
 - **Codex Desktop:** не обновляется и не восстанавливается автоматически; следует штатному каналу поставки системы.
-- **GitHub:** код подготовлен как локальный Git-репозиторий. Публикация остаётся отдельным действием владельца.
+- **GitHub:** локальные коммиты и теги созданы. Доступные инструменты данной сборки не позволили создать новый репозиторий, поэтому публичное размещение и удалённый CI пока **NOT_VERIFIED**.
 
 Проверки и границы описаны в [VALIDATION.md](docs/VALIDATION.md), [RESEARCH.md](docs/RESEARCH.md), [SECURITY.md](docs/SECURITY.md) и [ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Безопасность публикации / safety before public push
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 scripts/check-public-tree.py
+```
+
+The tracked-file scanner is a heuristic, **not a substitute for human review or GitHub secret scanning**. Do not publish a profile snapshot, its manifest or its private log, even if it has valid hashes. GitHub guidance for branch protection, code review and source-only publishing is in [MAINTAINER](docs/MAINTAINER.md). The reference docs for official Codex installation remain [openai/codex](https://github.com/openai/codex).
 
 ## Quick start (English)
 

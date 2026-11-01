@@ -26,3 +26,10 @@ The desired real profile may include global/project `AGENTS.md`, dozens of skill
 ## Validation evidence and limitations
 
 See `docs/VALIDATION.md` for local isolation tests. Cross-platform Windows end-to-end and physical GUI testing require access to that OS and are explicitly NOT_VERIFIED as of this artifact build. Shell and PowerShell official installer downloads were not run, to avoid modifying an unrelated runtime.
+
+## Reverification addendum (2026-11-01)
+
+- Official current Codex README: https://github.com/openai/codex/blob/main/README.md (standalone official Windows PowerShell and Linux/macOS shell installers; npm/Homebrew are alternatives). No historical `0.166.0` is hardcoded in executable paths.
+- Official custom instructions: https://developers.openai.com/codex/guides/agents-md ; official skills: https://developers.openai.com/codex/skills ; config: https://developers.openai.com/codex/config-reference ; MCP: https://developers.openai.com/codex/mcp . These describe separate user/project layers; installed state and external MCP executables require on-host verification.
+- GitHub Actions hardening: https://docs.github.com/en/actions/reference/security/secure-use ; Dependabot Actions updates: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/keeping-your-actions-up-to-date-with-dependabot . CI uses permissions read-only, pinned checkout, ephemeral fake profiles, no private snapshot artifacts.
+- Evidence vs assumptions: present docs do not prove a real Windows CLI or Desktop state works, nor that actual user skills are portable. This is a scoped configuration recovery toolkit, not a complete user-data migration product.

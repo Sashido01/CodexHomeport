@@ -1,23 +1,18 @@
-# Validation report / отчёт о проверке
+# Validation evidence — Homeport v0.0.1 (2026-11-01)
 
-**Scope**: local synthetic profiles; no Codex installation, credentials, network, or machine state modified.
+## Confirmed local isolated checks
 
-Test command: `python3 -m unittest discover -s tests -v`
+Command: `python -m unittest discover -s tests -v` (Linux, Python 3.13). **17/17 PASS** on a synthetic fake home directory; no current Codex profile read or written. Coverage: backup manifest and allowlist, exclusions of auth/sessions, verify and recovery dry-run/apply, rollback snapshot, tampering/traversal checks, Git worktree backup refusal, symlink paths, repeated snapshots, private filename exclusion, duplicate rows, private JSONL event rows, custom `CODEX_HOME`, version, manifest size/hash invalid types, portable collision rejection, oversized backup cleanup, and refusal of backup/audit files inside a live profile.
 
-At build: **11/11 PASS** on the available Linux container:
+Command: `python scripts/check-public-tree.py` with staged source tracked in Git. PASS at release creation; heuristic names and tokens only, not a formal proof of secret absence. `python -m py_compile scripts/homeport.py scripts/check-public-tree.py` and `git diff --check` also verified at release packaging.
 
-1. Selective backup of config/AGENTS/skills with exclusions and integrity verification.
-2. Dry-run unchanged source, explicit apply, post-restore hashes, preserved rollback copy and unrelated files.
-3. Tamper detection / fail closed.
-4. Manifest traversal rejection / fail closed.
-5. Reject backup inside Git worktree.
-6. Reject symlink source and destination.
-7. Reject overwrite of an existing snapshot.
-8. Explicit `CODEX_HOME` path override.
-9. Exclude `.env.production` and private `.pem` files.
-10. Reject duplicate entries in a manifest.
-11. Private JSONL audit trail with per-file details and no file-content disclosure.
+## NOT_VERIFIED (not an implementation claim)
 
-**Not verified:** Windows PowerShell runtime integration, Windows ACL behavior, symlink/reparse-point corner cases on NTFS, Linux/macOS official installer actual download, Windows official installer actual download, GUI/desktop app state recovery, cross-OS absolute-path translation, installed MCP/skills execution, live authenticated Codex session.
+- Genuine Windows PowerShell 7 runtime, ACL behavior, Windows installer execution, and real GUI double-click.
+- GitHub Actions remote runner outcomes, remote branch protections, public repository creation and public tag existence.
+- Native official Codex installer execution/upgrade, ChatGPT sign-in, Codex Desktop session restore, MCP reconnect, physical device behavior.
+- Real existing user profile migration on Windows/Ubuntu and cross-OS path rewriting.
 
-**Status:** Linux profile mechanism VERIFIED IN ISOLATION; Windows mechanism and upstream installation NOT_VERIFIED; full user environment migration NOT_VERIFIED.
+## Scope and stop condition
+
+This package is a source-complete `v0.0.1` candidate, **not** a proven ready-to-restore-the-entire-desktop product. A successful native Windows isolated run and actual GitHub publication/CI evidence are required before calling the overall requested delivery COMPLETE. Those external steps are the only remaining acceptance gaps; do not create endless optional tasks.
